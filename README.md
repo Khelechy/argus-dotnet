@@ -9,19 +9,20 @@ Ensure you have .NET 6+ installed.
 ### Install via .NET CLI
 
 ```sh
-    dotnet add package WatchDog.NET --version 1.4.10
+    dotnet add package Argus.NET
 ```
 
 ### Install via .NET CLI
 
 ```sh
-    Install-Package WatchDog.NET --version 1.4.10
+    Install-Package Argus.NET
 ```
 
 
 ### Usage -
 
 ```c#
+
     using Argus
     using Argus.Events
 ```
