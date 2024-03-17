@@ -8,11 +8,11 @@ namespace Argus.Events
 {
     public class ArgusEventArgs : EventArgs
     {
-        ArgusEvent Event { get; set; }
+        public ArgusEvent ArgusEvent { get; set; }
 
         public ArgusEventArgs(ArgusEvent argusEvent)
         {
-            Event = argusEvent;
+            ArgusEvent = argusEvent;
         }
     }
 }

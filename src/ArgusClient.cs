@@ -12,7 +12,7 @@ using argus_dotnet.src.Helpers;
 
 namespace Argus
 {
-    public class Argus
+    public class ArgusClient
     {
         public event EventHandler<ArgusEventArgs> ArgusEventRaised;
 
@@ -24,7 +24,7 @@ namespace Argus
         private TcpClient _client;
         private NetworkStream _stream;
 
-        public Argus(ArgusConfig config)
+        public ArgusClient(ArgusConfig config)
         {
             this._username = config.Username ?? "";
             this._password = config.Password ?? "";
@@ -47,13 +47,16 @@ namespace Argus
 
                 var buffer = new byte[1024];
 
+                int bytesRead;
+
                 while (true)
                 {
-                    int bytesRead = _stream.Read(buffer, 0, buffer.Length);
+                    bytesRead = _stream.Read(buffer, 0, buffer.Length);
                     string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
-                    if (true)
+                    if (!string.IsNullOrEmpty(response))
                     {
+
                         var (isJson, argusEvent, message) = Helpers.IsJsonString(response);
                         if (isJson)
                         {
@@ -63,9 +66,10 @@ namespace Argus
                         {
                             Console.WriteLine("Received: " + response);
                         }
-                        
                     }
+
                 }
+
 
                 _stream?.Close();
                 _client?.Close();

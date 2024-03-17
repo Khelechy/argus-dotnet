@@ -30,22 +30,21 @@ Ensure you have .NET 6+ installed.
 ### Using the package
 
 ```c#
-    var argus = new Argus(new ArgusConfig
+    var argus = new ArgusClient(new ArgusConfig
     {
-        Username = "testAdmin",
-        Password = "testPassword",
+        Username = "testuser",
+        Password = "testpassword",
         Host = "localhost",
         Port = 1337
     });
 
-    argus.ArgusEventRaised += HandleArgusevent
+    argus.ArgusEventRaised += HandleArgusevent;
 
-    argus.Connect();
+    argus.Connect();    
 
-    // Define what actions to take when the event is raised.
 
-    void HandleArgusevent(object sender, ArgusEventArgs e)
+    static void HandleArgusevent(object sender, ArgusEventArgs e)
     {
-        Console.WriteLine($"Recieved event with description {e.Event.ActionDescription}");
+        Console.WriteLine($"Received: {e.ArgusEvent.ActionDescription}");
     }
 ```
