@@ -1,46 +1,50 @@
-# ARGUS GO Client 
+# ARGUS C# Dotnet Client 
 
-This is the official go library for the [ARGUS Engine](https://github.com/Khelechy/argus), this library helps go developers and applications seamlessly integrate to the ARGUS Engine, authentication and event listening.
+This is the official C# dotnet (C# .Net) library for the [ARGUS Engine](https://github.com/Khelechy/argus), this library helps .NET developers and applications seamlessly integrate to the ARGUS Engine, authentication and event listening.
 
-### Install the package 
+## Install the package 
 
-Ensure you have golang +v1.19 installed. 
+Ensure you have .NET 6+ installed. 
+
+### Install via .NET CLI
 
 ```sh
-    go get github.com/khelechy/argus
+    dotnet add package WatchDog.NET --version 1.4.10
 ```
 
-### Import the package in your code
+### Install via .NET CLI
 
-```go
-    import (
-        ...
-        "github.com/khelechy/argus"
-        ...
-    )
+```sh
+    Install-Package WatchDog.NET --version 1.4.10
+```
+
+
+### Usage -
+
+```c#
+    using Argus
+    using Argus.Events
 ```
 
 ### Using the package
 
-```go
-    argus, err := argus.Connect(&argus.Argus{
-		Username: "testuser",
-		Password: "testpassword",
-	})
+```c#
+    var argus = new Argus(new ArgusConfig
+    {
+        Username = "testAdmin",
+        Password = "testPassword",
+        Host = "localhost",
+        Port = 1337
+    });
 
-	if err != nil {
-		fmt.Println()
-		return
-	}
+    argus.ArgusEventRaised += HandleArgusevent
 
-	for {
-		select {
-		case event := <-argus.Events:
-			fmt.Println(event.ActionDescription)
-		case message := <-argus.Messages:
-			log.Println(message)
-		case err := <-argus.Errors:
-			log.Println("Error:", err)
-		}
-	}
+    argus.Connect();
+
+    // Define what actions to take when the event is raised.
+
+    void HandleArgusevent(object sender, ArgusEventArgs e)
+    {
+        Console.WriteLine($"Recieved event with description {e.Event.ActionDescription}");
+    }
 ```
