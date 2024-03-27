@@ -8,7 +8,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.IO;
 using Argus.Events;
-using argus_dotnet.src.Helpers;
+using Argus.src.Helpers;
+using System.Threading;
+
 
 namespace Argus
 {
@@ -20,6 +22,9 @@ namespace Argus
         private readonly string _password;
         private readonly string _host;
         private readonly int _port;
+
+        private CancellationTokenSource _tokenSource;
+        private Thread _thread;
 
         private TcpClient _client;
         private NetworkStream _stream;
@@ -38,6 +43,8 @@ namespace Argus
         {
             try
             {
+                _tokenSource = new CancellationTokenSource();
+
                 _client = new TcpClient();
                 _client.Connect(_host, _port);
 
@@ -49,36 +56,52 @@ namespace Argus
 
                 int bytesRead;
 
-                while (true)
+
+                _thread = new(() =>
                 {
-                    bytesRead = _stream.Read(buffer, 0, buffer.Length);
-                    string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
-                    if (!string.IsNullOrEmpty(response))
+                    while (!_tokenSource.IsCancellationRequested)
                     {
+                        bytesRead = _stream.Read(buffer, 0, buffer.Length);
+                        string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
 
-                        var (isJson, argusEvent, message) = Helpers.IsJsonString(response);
-                        if (isJson)
+                        if (!string.IsNullOrEmpty(response))
                         {
-                            OnRaiseCustomEvent(new ArgusEventArgs(argusEvent));
+
+                            var (isJson, argusEvent, message) = Helpers.IsJsonString(response);
+                            if (isJson)
+                            {
+                                OnRaiseCustomEvent(new ArgusEventArgs(argusEvent));
+                            }
+                            else
+                            {
+                                Console.WriteLine("Received: " + response);
+                            }
                         }
-                        else
-                        {
-                            Console.WriteLine("Received: " + response);
-                        }
+
                     }
 
-                }
+                    _stream?.Close();
+                    _client?.Close();
 
+                });
 
-                _stream?.Close();
-                _client?.Close();
+                _thread.Start();
+
             }
             catch (Exception ex)
             {
                 Dispose();
-                throw new ArgusException(ex.Message, ex);  
+                throw new ArgusException(ex.Message, ex);
             }
+        }
+
+        public void Disconnect()
+        {
+            Console.WriteLine("Argus disconnection requested");
+            _tokenSource?.Cancel();
+            _thread.Join();
+            _tokenSource?.Dispose();
         }
 
         protected virtual void OnRaiseCustomEvent(ArgusEventArgs e)

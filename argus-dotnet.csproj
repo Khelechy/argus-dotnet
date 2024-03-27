@@ -2,9 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>argus_dotnet</RootNamespace>
+    <RootNamespace>Argus</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Description>This is the official C# dotnet (C# .Net) library for the ARGUS Engine, this library helps .NET developers and applications seamlessly integrate to the ARGUS Engine, authentication and event listening. ARGUS: Lightweight file/folder watcher for real-time notifications. Seamlessly integrates anywhere. Monitors file system changes allowing connected clients stay updated on changes within the watched files and directories. Leverages Go's concurrency and fsnotify for cross-platform support.</Description>
+	<PackageProjectUrl>https://github.com/khelechy/argus-dotnet</PackageProjectUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<RepositoryUrl>https://github.com/khelechy/argus-dotnet</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>File watcher, folder watcher, notification, fsnotify, Khelechy</PackageTags>
+	<Authors>Kelechi Onyekwere</Authors>
+	<PackageId>Argus.NET</PackageId>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<Version>1.0.0</Version>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

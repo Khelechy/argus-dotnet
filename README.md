@@ -48,3 +48,13 @@ Ensure you have .NET 6+ installed.
         Console.WriteLine($"Received: {e.ArgusEvent.ActionDescription}");
     }
 ```
+
+Call `Disconnect` to stop Argus client from listening, and dispose resources.
+
+```c#
+
+    argus.Disconnect();    
+
+```
+
+Note: Argus listens in the background, so it doesnt block the current running thread.

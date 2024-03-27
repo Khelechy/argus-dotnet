@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 
-namespace argus_dotnet.src.Helpers
+namespace Argus.src.Helpers
 {
     internal static class Helpers
     {
