@@ -15,6 +15,10 @@
 	<PackageId>Argus.NET</PackageId>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<Version>1.0.0</Version>
+	  <PackageReleaseNotes>
+		  - Argus runs in the background, no current thread blocks
+		  - Disconnect method to stop running process and disose resources
+	  </PackageReleaseNotes>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
